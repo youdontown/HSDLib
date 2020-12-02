@@ -126,6 +126,7 @@ namespace HSDRawViewer.Rendering
                 {
                     k.Time -= startFrame / 60f;
                 }
+                j.Keys[0].Time = 0.0f;
                 j.MaxTime = j.Keys[j.Keys.Count - 1].Time;
                 _motFile.EndTime = Math.Max(_motFile.EndTime, j.MaxTime);
             }

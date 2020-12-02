@@ -550,18 +550,29 @@ namespace HSDRawViewer.Converters
             if (Keys.Count == 0)
                 return null;
 
-            if (Keys.Count == 1)
-                return Keys[0];
-
-            if (Keys[0].Time > time)
-                return Keys[0];
+            if (Keys.Count == 1 || Keys[0].Time > time)
+                return new MOT_KEY()
+                {
+                    Time = time,
+                    X = Keys[0].X,
+                    Y = Keys[0].Y,
+                    Z = Keys[0].Z,
+                    W = Keys[0].W,
+                };
 
             // Keys.FindIndex should not return 0 here due to above check
             var index = Keys.FindIndex(e => e.Time > time) - 1;
-            
+
             // If index is negative all keys come before the provided time, pick the last one
             if (index < 0)
-                return Keys[Keys.Count - 1];
+                return new MOT_KEY()
+                {
+                    Time = time,
+                    X = Keys[Keys.Count - 1].X,
+                    Y = Keys[Keys.Count - 1].Y,
+                    Z = Keys[Keys.Count - 1].Z,
+                    W = Keys[Keys.Count - 1].W,
+                };
 
             var weight = (time - Keys[index].Time) / (Keys[index + 1].Time - Keys[index].Time);
             return new MOT_KEY()
