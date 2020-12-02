@@ -1002,6 +1002,10 @@ namespace HSDRawViewer.GUI.Plugins
 
             [Category("Scale Range"), DisplayName("End Scale Frame"), Description("")]
             public int ScaleRangeEndFrame { get; set; }
+
+
+            [Category("Repeat N Times"), DisplayName("Repeat N Times"), Description("")]
+            public int RepeatN { get; set; }
         }
 
         /// <summary>
@@ -1028,6 +1032,10 @@ namespace HSDRawViewer.GUI.Plugins
                     // Scale animation
                     if (settings.ScaleRangeFactor != 1)
                         JOBJManager.Animation.ScaleBy(settings.ScaleRangeFactor, settings.ScaleRangeStartFrame, settings.ScaleRangeEndFrame);
+
+                    // Repeat animation
+                    if (settings.RepeatN > 1)
+                        JOBJManager.Animation.Repeat(settings.RepeatN);
                     
                     
                     // reload edited animation

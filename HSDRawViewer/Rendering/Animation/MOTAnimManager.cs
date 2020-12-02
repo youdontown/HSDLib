@@ -132,6 +132,61 @@ namespace HSDRawViewer.Rendering
             }
         }
 
+        public override void Repeat(int n)
+        {
+            FrameCount = (FrameCount - 1) * n;
+            foreach (var j in _motFile.Joints)
+            {
+                float timeOffset = 0.0f;
+                var newList = new List<MOT_KEY>();
+
+                for (int i = 0; i < n; i++)
+                {
+                    foreach (var k in j.Keys)
+                    {
+                        if (k.Time == _motFile.EndTime)
+                        {
+                            break;
+                        }
+ 
+                        var newKey = new MOT_KEY()
+                        {
+                            Time = k.Time + timeOffset,
+                            X = k.X,
+                            Y = k.Y,
+                            Z = k.Z,
+                            W = k.W,
+                        };
+
+                        newList.Add(newKey);
+                    }
+
+                    timeOffset += _motFile.EndTime;
+                }
+
+                if (j.Keys[j.Keys.Count - 1].Time == _motFile.EndTime)
+                {
+                    var k = j.Keys[j.Keys.Count - 1];
+
+                    var newKey = new MOT_KEY()
+                    {
+                        Time = _motFile.EndTime * n,
+                        X = k.X,
+                        Y = k.Y,
+                        Z = k.Z,
+                        W = k.W,
+                    };
+
+                    newList.Add(newKey);
+                }
+
+                j.Keys = newList;
+                j.MaxTime = j.Keys[j.Keys.Count - 1].Time;
+            }
+
+            _motFile.EndTime *= n;
+        }
+
         public MOT_FILE GetMOT()
         {
             return _motFile;

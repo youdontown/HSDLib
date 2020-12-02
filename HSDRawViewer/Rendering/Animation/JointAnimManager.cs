@@ -334,6 +334,11 @@ namespace HSDRawViewer.Rendering
             }
         }
 
+        public virtual void Repeat(int n)
+        {
+
+        }
+
         #endregion
     }
 }
